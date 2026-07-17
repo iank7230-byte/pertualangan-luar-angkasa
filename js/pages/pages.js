@@ -81,8 +81,6 @@ const Pages = {
                 MENGENAL<br/><span class="text-cyan-200 text-2xl md:text-5xl">TATA SURYA</span>
             </h2>
 
-            ${this.progressMap()}
-
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 w-full max-w-4xl px-4 z-10">
                 
                 <div onclick="Router.go('materi')" class="card-menu-cyan p-4 md:p-6 flex flex-row md:flex-col items-center justify-start md:justify-between gap-4 md:gap-0 min-h-[90px] md:min-h-[280px] cursor-pointer">

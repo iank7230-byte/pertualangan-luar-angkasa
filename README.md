@@ -164,3 +164,4 @@ Proyek ini dibuat untuk keperluan pendidikan. Seluruh konten materi mengacu pada
 ---
 
 *Selamat belajar di Eduspace, Sobat IPA! 🌍🪐⭐*
+"# pertualangan-luar-angkasa" 

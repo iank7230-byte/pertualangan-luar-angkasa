@@ -278,36 +278,48 @@ function showLevelGuide(levelNum) {
 function openMissionSelector() {
   const container = document.getElementById("main-content");
   container.innerHTML = `
-    <div class="bg-black/50 border border-cyan-500/20 rounded-[24px] md:rounded-[32px] p-5 md:p-6 max-w-2xl mx-auto text-center">
-        <h2 class="font-bubble-title text-2xl md:text-3xl text-yellow-300 mb-5">PILIH TANTANGAN MISI</h2>
-        <p class="text-[11px] text-gray-400 mb-4">Pilih Misi untuk mencatat skor atau Latihan untuk mencoba tanpa menyimpan progres.</p>
-        <div class="grid grid-cols-1 gap-2.5 max-h-[380px] overflow-y-auto pr-1">
-            ${[1, 2, 3, 4, 5]
-              .map((levelNum) => {
-                const labels = {
-                  1: "🛰️ LEVEL 1: URUTAN ORBIT PLANET",
-                  2: "🪐 LEVEL 2: COCOKKAN GAMBAR",
-                  3: "⚖️ LEVEL 3: BENAR / SALAH",
-                  4: "📝 LEVEL 4: PILIHAN GANDA",
-                  5: "🚀 LEVEL 5: MISSION SPACE",
-                };
-                const type = levelNum <= 2 ? "Game" : levelNum <= 4 ? "Kuis" : "Game Pesawat";
-                return `
-                  <div class="bg-[#0a1931] border-2 border-cyan-400/30 rounded-2xl p-3 flex flex-col sm:flex-row sm:items-center gap-3 text-left">
-                    <div class="flex-1">
-                      <p class="text-xs md:text-sm font-bold">${labels[levelNum]}</p>
-                      <span class="inline-block mt-1 text-[10px] bg-cyan-500/20 text-cyan-300 px-2 py-0.5 rounded-full font-bold uppercase">${type}</span>
+    <div class="flex flex-col items-center justify-center text-center py-2 md:py-4 w-full">
+      <div class="w-full max-w-4xl px-4 mb-5">
+        <div class="bg-black/50 border border-cyan-500/20 rounded-[24px] md:rounded-[32px] p-5 md:p-6 text-center">
+          <div class="flex flex-wrap items-center justify-between gap-3 mb-5">
+            <div class="text-left">
+              <p class="text-[10px] uppercase tracking-widest text-yellow-300 font-bold">Misi Pertualangan</p>
+              <h2 class="font-bubble-title text-2xl md:text-3xl text-white">PILIH TANTANGAN MISI</h2>
+            </div>
+            <button onclick="Router.go('home')" class="px-4 py-2 bg-white/5 hover:bg-white/10 rounded-full text-[10px] md:text-xs font-bold border border-white/10 transition-all">Kembali</button>
+          </div>
+
+          ${Pages.progressMap()}
+
+          <p class="text-[11px] text-gray-400 mb-4">Pilih Misi untuk mencatat skor atau Latihan untuk mencoba tanpa menyimpan progres.</p>
+          <div class="grid grid-cols-1 gap-2.5 max-h-[380px] overflow-y-auto pr-1">
+              ${[1, 2, 3, 4, 5]
+                .map((levelNum) => {
+                  const labels = {
+                    1: "🛰️ LEVEL 1: URUTAN ORBIT PLANET",
+                    2: "🪐 LEVEL 2: COCOKKAN GAMBAR",
+                    3: "⚖️ LEVEL 3: BENAR / SALAH",
+                    4: "📝 LEVEL 4: PILIHAN GANDA",
+                    5: "🚀 LEVEL 5: MISSION SPACE",
+                  };
+                  const type = levelNum <= 2 ? "Game" : levelNum <= 4 ? "Kuis" : "Game Pesawat";
+                  return `
+                    <div class="bg-[#0a1931] border-2 border-cyan-400/30 rounded-2xl p-3 flex flex-col sm:flex-row sm:items-center gap-3 text-left">
+                      <div class="flex-1">
+                        <p class="text-xs md:text-sm font-bold">${labels[levelNum]}</p>
+                        <span class="inline-block mt-1 text-[10px] bg-cyan-500/20 text-cyan-300 px-2 py-0.5 rounded-full font-bold uppercase">${type}</span>
+                      </div>
+                      <div class="grid grid-cols-2 gap-2 sm:w-44">
+                        <button onclick="startLevel(${levelNum}, false)" class="py-2 bg-cyan-400 hover:bg-cyan-300 text-black rounded-xl font-extrabold text-[11px] transition-all">Misi</button>
+                        <button onclick="startLevel(${levelNum}, true)" class="py-2 bg-white/10 hover:bg-white/20 border border-white/20 rounded-xl font-bold text-[11px] transition-all">Latihan</button>
+                      </div>
                     </div>
-                    <div class="grid grid-cols-2 gap-2 sm:w-44">
-                      <button onclick="startLevel(${levelNum}, false)" class="py-2 bg-cyan-400 hover:bg-cyan-300 text-black rounded-xl font-extrabold text-[11px] transition-all">Misi</button>
-                      <button onclick="startLevel(${levelNum}, true)" class="py-2 bg-white/10 hover:bg-white/20 border border-white/20 rounded-xl font-bold text-[11px] transition-all">Latihan</button>
-                    </div>
-                  </div>
-                `;
-              })
-              .join("")}
+                  `;
+                })
+                .join("")}
+          </div>
         </div>
-        <button onclick="Router.go('home')" class="py-2.5 text-xs text-gray-400 hover:text-white transition-all mt-3 block w-full text-center">Batal</button>
+      </div>
     </div>
     `;
 }
