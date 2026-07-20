@@ -33,11 +33,21 @@ const Pages = {
                     ${[1, 2, 3, 4, 5]
                       .map((levelNum) => {
                         const isDone = completed.includes(levelNum);
+                        const isUnlocked = GameState.isLevelUnlocked(levelNum);
                         const isLast = Number(GameState.lastLevel) === levelNum;
+                        const stateClass = isDone
+                          ? "bg-green-500/20 border-green-400/50 text-green-200"
+                          : isUnlocked
+                            ? isLast
+                              ? "bg-yellow-400/15 border-yellow-300/50 text-yellow-200"
+                              : "bg-white/5 border-white/10 text-gray-300"
+                            : "bg-white/10 border-white/10 text-gray-500 opacity-60";
+                        const displayText = isDone ? "✓" : isUnlocked ? levelNum : "🔒";
+                        const label = isDone ? "Selesai" : isUnlocked ? (isLast ? "Terakhir" : "Level") : "Terkunci";
                         return `
-                            <button onclick="startLevel(${levelNum}, false)" class="relative min-h-[54px] rounded-xl border ${isDone ? "bg-green-500/20 border-green-400/50 text-green-200" : isLast ? "bg-yellow-400/15 border-yellow-300/50 text-yellow-200" : "bg-white/5 border-white/10 text-gray-300"} flex flex-col items-center justify-center gap-0.5 transition-all hover:bg-cyan-500/15">
-                                <span class="font-bubble-title text-base md:text-lg">${isDone ? "✓" : levelNum}</span>
-                                <span class="text-[8px] md:text-[9px] font-bold uppercase">${isDone ? "Selesai" : isLast ? "Terakhir" : "Level"}</span>
+                            <button onclick="${isUnlocked ? `startLevel(${levelNum}, false)` : "void(0)"}" ${isUnlocked ? "" : "disabled"} class="relative min-h-[54px] rounded-xl border ${stateClass} flex flex-col items-center justify-center gap-0.5 transition-all ${isUnlocked ? "hover:bg-cyan-500/15" : "cursor-not-allowed"}">
+                                <span class="font-bubble-title text-base md:text-lg">${displayText}</span>
+                                <span class="text-[8px] md:text-[9px] font-bold uppercase">${label}</span>
                             </button>
                         `;
                       })

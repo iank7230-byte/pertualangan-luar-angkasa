@@ -46,6 +46,26 @@ const GameState = {
     this.updateGlobalHeader();
   },
 
+  isLevelUnlocked(levelNum) {
+    const levelNumber = Number(levelNum);
+    if (!Number.isFinite(levelNumber) || levelNumber < 1) return false;
+    if (levelNumber === 1) return true;
+    if ((this.progress.levelsCompleted || []).includes(levelNumber)) return true;
+    return (this.progress.levelsCompleted || []).includes(levelNumber - 1);
+  },
+
+  getHighestUnlockedLevel() {
+    let highestUnlocked = 1;
+    for (let level = 1; level <= 5; level += 1) {
+      if (this.isLevelUnlocked(level)) {
+        highestUnlocked = level;
+      } else {
+        break;
+      }
+    }
+    return highestUnlocked;
+  },
+
   completeLevel(levelNum, stats = {}) {
     this.lastLevel = levelNum;
     StorageManager.set("lastLevel", this.lastLevel);
@@ -166,12 +186,11 @@ const Router = {
     if (pageId === "splash") {
       if (playerTag) playerTag.style.visibility = "hidden";
       if (btnScore) btnScore.style.visibility = "hidden";
-      if (btnHome) btnHome.style.visibility = "visible";
+      if (btnHome) btnHome.style.visibility = "hidden";
     } else {
       if (playerTag) playerTag.style.visibility = "visible";
       if (btnScore) btnScore.style.visibility = "visible";
-      if (btnHome)
-        btnHome.style.visibility = pageId === "home" ? "hidden" : "visible";
+      if (btnHome) btnHome.style.visibility = "visible";
     }
 
     if (window.missionGameLoopId) {
@@ -251,6 +270,16 @@ const Router = {
 };
 
 function startLevel(levelNum, practiceMode = false) {
+  if (!practiceMode && !GameState.isLevelUnlocked(levelNum)) {
+    const requiredLevel = levelNum - 1;
+    const message =
+      requiredLevel === 1
+        ? "Selesaikan Level 1 terlebih dahulu untuk membuka Level 2."
+        : `Selesaikan Level ${requiredLevel} terlebih dahulu untuk membuka Level ${levelNum}.`;
+    Dialog.alert(message);
+    return;
+  }
+
   GameState.currentLevel = levelNum;
   GameState.lastLevel = levelNum;
   GameState.practiceMode = practiceMode;
@@ -259,8 +288,8 @@ function startLevel(levelNum, practiceMode = false) {
 }
 
 function continueLastLevel() {
-  const lastLevel = Number(GameState.lastLevel) || 1;
-  startLevel(Math.min(Math.max(lastLevel, 1), 5), false);
+  const targetLevel = GameState.getHighestUnlockedLevel();
+  startLevel(targetLevel, false);
 }
 
 function showLevelGuide(levelNum) {
@@ -303,15 +332,20 @@ function openMissionSelector() {
                     5: "🚀 LEVEL 5: MISSION SPACE",
                   };
                   const type = levelNum <= 2 ? "Game" : levelNum <= 4 ? "Kuis" : "Game Pesawat";
+                  const completed = GameState.progress.levelsCompleted || [];
+                  const isDone = completed.includes(levelNum);
+                  const isUnlocked = GameState.isLevelUnlocked(levelNum);
+                  const lockedText = isUnlocked ? "" : `<p class="text-[10px] text-yellow-400 mt-2">Buka setelah menyelesaikan Level ${levelNum - 1}</p>`;
                   return `
-                    <div class="bg-[#0a1931] border-2 border-cyan-400/30 rounded-2xl p-3 flex flex-col sm:flex-row sm:items-center gap-3 text-left">
+                    <div class="bg-[#0a1931] border-2 ${isUnlocked ? "border-cyan-400/30" : "border-white/10 opacity-70"} rounded-2xl p-3 flex flex-col sm:flex-row sm:items-center gap-3 text-left">
                       <div class="flex-1">
                         <p class="text-xs md:text-sm font-bold">${labels[levelNum]}</p>
-                        <span class="inline-block mt-1 text-[10px] bg-cyan-500/20 text-cyan-300 px-2 py-0.5 rounded-full font-bold uppercase">${type}</span>
+                        <span class="inline-block mt-1 text-[10px] ${isDone ? "bg-green-500/20 text-green-300" : isUnlocked ? "bg-cyan-500/20 text-cyan-300" : "bg-white/10 text-gray-400"} px-2 py-0.5 rounded-full font-bold uppercase">${isDone ? "Selesai" : isUnlocked ? "Terbuka" : "Terkunci"}</span>
+                        ${lockedText}
                       </div>
                       <div class="grid grid-cols-2 gap-2 sm:w-44">
-                        <button onclick="startLevel(${levelNum}, false)" class="py-2 bg-cyan-400 hover:bg-cyan-300 text-black rounded-xl font-extrabold text-[11px] transition-all">Misi</button>
-                        <button onclick="startLevel(${levelNum}, true)" class="py-2 bg-white/10 hover:bg-white/20 border border-white/20 rounded-xl font-bold text-[11px] transition-all">Latihan</button>
+                        <button ${isUnlocked ? `onclick="startLevel(${levelNum}, false)"` : "disabled"} class="py-2 ${isUnlocked ? "bg-cyan-400 hover:bg-cyan-300 text-black" : "bg-white/10 border border-white/20 text-gray-400 cursor-not-allowed"} rounded-xl font-extrabold text-[11px] transition-all">Misi</button>
+                        <button ${isUnlocked ? `onclick="startLevel(${levelNum}, true)"` : "disabled"} class="py-2 ${isUnlocked ? "bg-white/10 hover:bg-white/20 border border-white/20" : "bg-white/5 border border-white/10 text-gray-500 cursor-not-allowed"} rounded-xl font-bold text-[11px] transition-all">Latihan</button>
                       </div>
                     </div>
                   `;
