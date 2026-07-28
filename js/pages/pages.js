@@ -360,6 +360,10 @@ const Pages = {
                 <button onclick="Router.go(Router.previousPage || 'home')" class="px-4 py-1.5 bg-white/5 hover:bg-white/10 rounded-full text-xs font-bold transition-all border border-white/10">← Kembali</button>
             </div>
             <div class="space-y-4 text-xs md:text-sm text-gray-300 leading-relaxed">
+                <div class="bg-yellow-400/10 border-l-4 border-yellow-400 p-3 rounded-lg text-yellow-100">
+                    <strong class="block text-sm text-yellow-300">PERINGATAN PENTING — KUIS HANYA SEKALI DIKIRIM</strong>
+                    <p class="text-[11px] text-yellow-100 mt-1">Setiap kuis misi hanya dapat diisi satu kali untuk dicatat sebagai skor. Pastikan membaca soal dan memeriksa jawaban sebelum mengirim, karena skor dan progres tidak dapat diubah setelah disimpan.</p>
+                </div>
                 <p><strong>Kosmos Petualang</strong> adalah platform edukasi interaktif yang dirancang khusus untuk mempermudah siswa SMP Kelas VII dalam mengeksplorasi ilmu sains Tata Surya dengan seru!</p>
                 <div class="bg-[#0a1931] border border-cyan-500/30 p-4 rounded-xl space-y-2">
                     <h4 class="font-bold text-white text-xs">PETUNJUK NARASI:</h4>
@@ -385,6 +389,63 @@ const Pages = {
         </div>
         `;
   },
+
+          team() {
+            return `
+                <div class="bg-black/50 border border-cyan-500/20 rounded-[32px] p-6 max-w-xl mx-auto">
+                    <div class="flex items-center justify-between mb-4">
+                        <h2 class="font-bubble-title text-2xl text-cyan-300">Profil Tim</h2>
+                        <button onclick="Router.go('home')" class="px-4 py-1.5 bg-white/5 hover:bg-white/10 rounded-full text-xs font-bold transition-all border border-white/10">← Lanjut ke Beranda</button>
+                    </div>
+
+                    <div class="space-y-4 text-sm text-gray-300">
+                        <p class="text-xs text-gray-400">Berikut anggota tim pengembang (urutan):</p>
+
+                        <div class="grid grid-cols-1 gap-3">
+                            <div class="bg-[#0a1931] border border-cyan-500/30 p-3 rounded-xl flex items-center gap-3">
+                                <img src="${ASSETS.astronautMateri}" alt="Evi Wahyuni" class="w-14 h-14 rounded-full object-cover border-2 border-white/10 shadow-md" onerror="this.src='${ASSETS.placeholder}'">
+                                <div>
+                                    <div class="font-bold text-white">1. Evi Wahyuni</div>
+                                    <div class="text-[11px] text-gray-400">230111510003 • Astronot — Navigator & Desain Visual</div>
+                                    <div class="text-[11px] text-cyan-300 mt-1">Siap menjelajah tata surya bersama sobat IPA.</div>
+                                </div>
+                            </div>
+
+                            <div class="bg-[#0a1931] border border-cyan-500/30 p-3 rounded-xl flex items-center gap-3">
+                                <img src="${ASSETS.astronautGame}" alt="Artika Sari Devi" class="w-14 h-14 rounded-full object-cover border-2 border-white/10 shadow-md" onerror="this.src='${ASSETS.placeholder}'">
+                                <div>
+                                    <div class="font-bold text-white">2. Artika Sari Devi</div>
+                                    <div class="text-[11px] text-gray-400">230111510002 • Astronot — Pengembang Konten</div>
+                                    <div class="text-[11px] text-cyan-300 mt-1">Menyusun materi dan kuis edukatif.</div>
+                                </div>
+                            </div>
+
+                            <div class="bg-[#0a1931] border border-cyan-500/30 p-3 rounded-xl flex items-center gap-3">
+                                <img src="${ASSETS.astronautQuiz}" alt="A. Anna Fitri Maulida" class="w-14 h-14 rounded-full object-cover border-2 border-white/10 shadow-md" onerror="this.src='${ASSETS.placeholder}'">
+                                <div>
+                                    <div class="font-bold text-white">3. A. Anna Fitri Maulida</div>
+                                    <div class="text-[11px] text-gray-400">230111512001 • Astronot — Pengembang Frontend</div>
+                                    <div class="text-[11px] text-cyan-300 mt-1">Bertugas memastikan antarmuka ramah siswa.</div>
+                                </div>
+                            </div>
+
+                            <div class="bg-[#0a1931] border border-cyan-500/30 p-3 rounded-xl flex items-center gap-3">
+                                <img src="${ASSETS.astronautSplash}" alt="Dwi Ardiyan Putra" class="w-14 h-14 rounded-full object-cover border-2 border-white/10 shadow-md" onerror="this.src='${ASSETS.placeholder}'">
+                                <div>
+                                    <div class="font-bold text-white">4. Dwi Ardiyan Putra</div>
+                                    <div class="text-[11px] text-gray-400">230111512009 • Astronot — Pengembang Logika & Game</div>
+                                    <div class="text-[11px] text-cyan-300 mt-1">Merancang mekanik misi dan kuis interaktif.</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="pt-3 border-t border-white/5">
+                            <button onclick="Router.go('home')" class="w-full py-3 bg-gradient-to-r from-yellow-400 to-amber-500 text-black font-extrabold rounded-2xl shadow-lg">Lanjut ke Beranda ▶</button>
+                        </div>
+                    </div>
+                </div>
+                `;
+          },
 
   ar() {
     return `

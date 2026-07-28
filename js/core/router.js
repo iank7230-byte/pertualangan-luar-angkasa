@@ -225,6 +225,9 @@ const Router = {
       case "home":
         container.innerHTML = Pages.home();
         break;
+      case "team":
+        container.innerHTML = Pages.team();
+        break;
       case "materi":
         container.innerHTML = Pages.materi();
         MateriPage.init();
@@ -369,7 +372,7 @@ function savePlayerNameAndStart() {
   GameState.playerName = name;
   GameState.save();
   SoundManager.startBGM(); // Aktifkan musik secara paksa setelah interaksi tombol
-  Router.go("home");
+  Router.go("team");
 }
 
 function confirmExit() {
