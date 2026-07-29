@@ -84,6 +84,38 @@ const Pages = {
         `;
   },
 
+  dosen() {
+    return `
+        <div class="bg-black/40 border border-cyan-500/20 rounded-[28px] p-6 mx-auto max-w-3xl">
+            <div class="text-center mb-6">
+                <p class="text-[10px] uppercase tracking-widest text-cyan-300 font-bold mb-2">Dosen Pengampuh Mata Kuliah</p>
+                <h2 class="font-bubble-title text-3xl md:text-4xl text-yellow-300 mb-3">Dosen Pengampuh</h2>
+                <p class="text-sm md:text-base text-gray-300 max-w-xl mx-auto">Berikut daftar dosen pengampuh dan NIDN.</p>
+            </div>
+
+            <div class="space-y-4 text-sm md:text-base">
+                <div class="rounded-3xl bg-white/5 border border-cyan-500/20 p-4">
+                    <p class="font-bold text-white">1. Nur Indah Sari, S.Pd., M.Pd.</p>
+                    <p class="text-cyan-200 mt-1">NIDN: 0904048901</p>
+                </div>
+                <div class="rounded-3xl bg-white/5 border border-cyan-500/20 p-4">
+                    <p class="font-bold text-white">2. Dr. Sitti Saenab, M. Pd.</p>
+                    <p class="text-cyan-200 mt-1">NIDN: 0002038104</p>
+                </div>
+                <div class="rounded-3xl bg-white/5 border border-cyan-500/20 p-4">
+                    <p class="font-bold text-white">3. A. Afrinaramadhani Hatta, S.Pd., M.Pd.</p>
+                    <p class="text-cyan-200 mt-1">NIDN: 0011049009</p>
+                </div>
+            </div>
+
+            <div class="flex flex-col sm:flex-row items-center justify-between gap-3 mt-8">
+                <button onclick="Router.go('splash')" class="w-full sm:w-auto px-5 py-3 bg-white/10 hover:bg-white/20 border border-white/15 rounded-2xl text-sm font-bold transition-all">Kembali</button>
+                <button onclick="Router.go('team')" class="w-full sm:w-auto px-5 py-3 bg-gradient-to-r from-yellow-400 to-amber-500 text-black rounded-2xl text-sm font-extrabold shadow-lg transition-all">Lanjut ke Profil Tim</button>
+            </div>
+        </div>
+        `;
+  },
+
   home() {
     return `
         <div class="flex flex-col items-center justify-center text-center py-2 md:py-4">
@@ -123,6 +155,32 @@ const Pages = {
                     </div>
                 </div>
 
+            </div>
+        </div>
+        `;
+  },
+
+  team() {
+    return `
+        <div class="bg-black/40 border border-cyan-500/20 rounded-[28px] p-5 md:p-7 mx-auto max-w-4xl">
+            <div class="text-center mb-6">
+                <p class="text-[10px] uppercase tracking-widest text-cyan-300 font-bold mb-2">Pengenalan Tim Pengembangan</p>
+                <h2 class="font-bubble-title text-3xl md:text-5xl text-yellow-300 mb-3">Tim Pengembang</h2>
+                <p class="text-sm md:text-base text-gray-300 max-w-2xl mx-auto">Temui dosen pengampuh dan mahasiswa yang mendukung pembuatan media pembelajaran ini.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <button id="team-btn-dosen" onclick="showTeamProfile('dosen')" class="w-full py-4 bg-cyan-500/15 border border-cyan-400/30 rounded-2xl text-white font-bold hover:bg-cyan-500/25 transition-all">Profil Dosen Pengampuh</button>
+                <button id="team-btn-mahasiswa" onclick="showTeamProfile('mahasiswa')" class="w-full py-4 bg-yellow-400/10 border border-yellow-300/30 rounded-2xl text-white font-bold hover:bg-yellow-400/20 transition-all">Profil Mahasiswa</button>
+            </div>
+
+            <div id="team-profile-panel" class="mt-6 bg-[#06192f] border border-cyan-500/15 rounded-3xl p-5 min-h-[220px] text-left">
+                <p class="text-sm text-cyan-200">Pilih profil untuk melihat detail tim pengembangan.</p>
+            </div>
+
+            <div class="flex flex-col sm:flex-row items-center justify-between gap-3 mt-6">
+                <button onclick="Router.go('dosen')" class="w-full sm:w-auto px-5 py-3 bg-white/10 hover:bg-white/20 border border-white/15 rounded-2xl text-sm font-bold transition-all">Kembali ke Dosen</button>
+                <button onclick="Router.go('home')" class="w-full sm:w-auto px-5 py-3 bg-gradient-to-r from-yellow-400 to-amber-500 text-black rounded-2xl text-sm font-extrabold shadow-lg transition-all">Selanjutnya</button>
             </div>
         </div>
         `;

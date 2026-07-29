@@ -186,7 +186,7 @@ const Router = {
     if (pageId === "splash") {
       if (playerTag) playerTag.style.visibility = "hidden";
       if (btnScore) btnScore.style.visibility = "hidden";
-      if (btnHome) btnHome.style.visibility = "hidden";
+      if (btnHome) btnHome.style.visibility = "visible";
     } else {
       if (playerTag) playerTag.style.visibility = "visible";
       if (btnScore) btnScore.style.visibility = "visible";
@@ -227,6 +227,9 @@ const Router = {
         break;
       case "team":
         container.innerHTML = Pages.team();
+        break;
+      case "dosen":
+        container.innerHTML = Pages.dosen();
         break;
       case "materi":
         container.innerHTML = Pages.materi();
@@ -372,7 +375,53 @@ function savePlayerNameAndStart() {
   GameState.playerName = name;
   GameState.save();
   SoundManager.startBGM(); // Aktifkan musik secara paksa setelah interaksi tombol
-  Router.go("team");
+  Router.go("dosen");
+}
+
+function showTeamProfile(type) {
+  const panel = document.getElementById("team-profile-panel");
+  if (!panel) return;
+
+  const profiles = {
+    dosen: `
+      <div class="space-y-4 text-sm md:text-base">
+        <div class="rounded-2xl bg-white/5 border border-cyan-500/20 p-4">
+          <p class="text-xs uppercase tracking-widest text-yellow-300 font-bold mb-2">1. Nur Indah Sari, S.Pd., M.Pd.</p>
+          <p class="text-cyan-100">NIDN: 0904048901</p>
+        </div>
+        <div class="rounded-2xl bg-white/5 border border-cyan-500/20 p-4">
+          <p class="text-xs uppercase tracking-widest text-yellow-300 font-bold mb-2">2. Dr. Sitti Saenab, M. Pd.</p>
+          <p class="text-cyan-100">NIDN: 0002038104</p>
+        </div>
+        <div class="rounded-2xl bg-white/5 border border-cyan-500/20 p-4">
+          <p class="text-xs uppercase tracking-widest text-yellow-300 font-bold mb-2">3. A. Afrinaramadhani Hatta, S.Pd., M.Pd.</p>
+          <p class="text-cyan-100">NIDN: 0011049009</p>
+        </div>
+      </div>
+    `,
+    mahasiswa: `
+      <div class="space-y-4 text-sm md:text-base">
+        <div class="rounded-2xl bg-white/5 border border-yellow-400/20 p-4">
+          <p class="text-xs uppercase tracking-widest text-yellow-300 font-bold mb-2">1. Artika Sari Devi</p>
+          <p class="text-cyan-100">NIM: 230111510002</p>
+        </div>
+        <div class="rounded-2xl bg-white/5 border border-yellow-400/20 p-4">
+          <p class="text-xs uppercase tracking-widest text-yellow-300 font-bold mb-2">2. A. Anna Fitri Maulida</p>
+          <p class="text-cyan-100">NIM: 230111512001</p>
+        </div>
+        <div class="rounded-2xl bg-white/5 border border-yellow-400/20 p-4">
+          <p class="text-xs uppercase tracking-widest text-yellow-300 font-bold mb-2">3. Dwi Ardiyan Putra</p>
+          <p class="text-cyan-100">NIM: 230111512009</p>
+        </div>
+        <div class="rounded-2xl bg-white/5 border border-yellow-400/20 p-4">
+          <p class="text-xs uppercase tracking-widest text-yellow-300 font-bold mb-2">4. Evi Wahyuni</p>
+          <p class="text-cyan-100">NIM: 230111510003</p>
+        </div>
+      </div>
+    `,
+  };
+
+  panel.innerHTML = profiles[type] || `<p class="text-sm text-cyan-200">Pilih profil untuk melihat detail tim pengembangan.</p>`;
 }
 
 function confirmExit() {
