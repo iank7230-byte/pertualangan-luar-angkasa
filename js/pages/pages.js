@@ -367,7 +367,10 @@ const Pages = {
     const history = GameState.history;
     return `
         <div class="bg-black/50 border border-cyan-500/20 rounded-[24px] md:rounded-[32px] p-4 md:p-6 max-w-2xl mx-auto">
-            <h2 class="font-bubble-title text-xl md:text-2xl text-cyan-300 mb-4 md:mb-6">Papan Prestasi</h2>
+            <div class="flex flex-wrap items-center justify-between gap-3 mb-4 md:mb-6">
+                <h2 class="font-bubble-title text-xl md:text-2xl text-cyan-300">Papan Prestasi</h2>
+                <button onclick="Router.go('home')" class="px-4 py-2 bg-white/5 hover:bg-white/10 rounded-full text-xs font-bold transition-all border border-white/10">← Kembali ke Beranda</button>
+            </div>
             <div class="grid grid-cols-3 gap-2 md:gap-4 mb-6">
                 <div class="bg-white/5 p-3 md:p-4 rounded-xl text-center">
                     <span class="text-[9px] md:text-[10px] text-gray-400 uppercase block mb-1">Skor</span>
