@@ -150,7 +150,7 @@ const Pages = {
                         <img src="${ASSETS.astronautQuiz}" alt="Siswa SMP menjelajah AR" class="w-12 h-12 md:w-28 md:h-28 rounded-full object-cover border-2 md:border-4 border-white shadow-xl" onerror="this.src='${ASSETS.placeholder}'">
                     </div>
                     <div class="flex flex-col items-start md:items-center">
-                        <span class="font-bubble-title text-xl md:text-2xl tracking-wider text-white font-bubble-stroke">JELAJAH AR</span>
+                        <span class="font-bubble-title text-xl md:text-2xl tracking-wider text-white font-bubble-stroke">JELAJAH TATA SURYA</span>
                         <p class="text-[9px] md:text-[11px] text-cyan-200 mt-1">Scan Planet di Sekitarmu 📸</p>
                     </div>
                 </div>
