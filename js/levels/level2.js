@@ -104,7 +104,7 @@ const Level2 = {
             const durationStr = `${Math.floor(durationSec/60)}m ${durationSec%60}s`;
             GameState.currentLevel = 2;
             GameState.completeLevel(2, {
-                score: 1000,
+                score: 20,
                 accuracy: 100,
                 duration: durationStr
             });

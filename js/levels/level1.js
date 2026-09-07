@@ -108,9 +108,8 @@ const Level1 = {
         
         if (name === targetName) {
             SoundManager.play('correct');
-            GameFeedback.show('correct', GameState.practiceMode ? 'Benar! Mode latihan' : '+100 XP');
+            GameFeedback.show('correct', GameState.practiceMode ? 'Benar! Mode latihan' : 'Benar!');
             this.targetIndex++;
-            GameState.addScore(100);
 
             element.style.transform = "translate(-50%, -50%) scale(1.4)";
             orbitElement.style.borderColor = "#00f0ff";
@@ -121,8 +120,8 @@ const Level1 = {
                 const durationStr = `${Math.floor(durationSec/60)}m ${durationSec%60}s`;
                 GameState.currentLevel = 1;
                 GameState.completeLevel(1, {
-                    score: 800,
-                    accuracy: Math.floor((8 / (8 + (3 - this.lives))) * 100),
+                    score: Math.max(1, Math.round((8 / (8 + (3 - this.lives))) * 20)),
+                    accuracy: Math.max(1, Math.floor((8 / (8 + (3 - this.lives))) * 100)),
                     duration: durationStr
                 });
             } else {

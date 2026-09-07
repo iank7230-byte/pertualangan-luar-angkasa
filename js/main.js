@@ -6,7 +6,7 @@ function showLevelUpModal(levelNum, scoreEarned, accuracyVal, badgeName) {
   SoundManager.play("win");
   document.getElementById("modal-title").innerText =
     `MISI LEVEL ${levelNum} BERHASIL!`;
-  document.getElementById("modal-score").innerText = `+${scoreEarned} XP`;
+  document.getElementById("modal-score").innerText = `${scoreEarned}/20`;
   document.getElementById("modal-accuracy").innerText = `${accuracyVal}%`;
   document.getElementById("modal-badge").innerText = badgeName;
 

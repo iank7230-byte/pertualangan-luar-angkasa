@@ -110,7 +110,7 @@ const Pages = {
 
             <div class="flex flex-col sm:flex-row items-center justify-between gap-3 mt-8">
                 <button onclick="Router.go('splash')" class="w-full sm:w-auto px-5 py-3 bg-white/10 hover:bg-white/20 border border-white/15 rounded-2xl text-sm font-bold transition-all">Kembali</button>
-                <button onclick="Router.go('team')" class="w-full sm:w-auto px-5 py-3 bg-gradient-to-r from-yellow-400 to-amber-500 text-black rounded-2xl text-sm font-extrabold shadow-lg transition-all">Lanjut ke Profil Tim</button>
+                <button onclick="Router.go('home')" class="w-full sm:w-auto px-5 py-3 bg-gradient-to-r from-yellow-400 to-amber-500 text-black rounded-2xl text-sm font-extrabold shadow-lg transition-all">Lanjut ke Beranda</button>
             </div>
         </div>
         `;
@@ -150,7 +150,7 @@ const Pages = {
                         <img src="${ASSETS.astronautQuiz}" alt="Siswa SMP menjelajah AR" class="w-12 h-12 md:w-28 md:h-28 rounded-full object-cover border-2 md:border-4 border-white shadow-xl" onerror="this.src='${ASSETS.placeholder}'">
                     </div>
                     <div class="flex flex-col items-start md:items-center">
-                        <span class="font-bubble-title text-xl md:text-2xl tracking-wider text-white font-bubble-stroke">JELAJAH TATA SURYA</span>
+                        <span class="font-bubble-title text-xl md:text-2xl tracking-wider text-white font-bubble-stroke">JELAJAH AR</span>
                         <p class="text-[9px] md:text-[11px] text-cyan-200 mt-1">Scan Planet di Sekitarmu 📸</p>
                     </div>
                 </div>
@@ -179,7 +179,7 @@ const Pages = {
             </div>
 
             <div class="flex flex-col sm:flex-row items-center justify-between gap-3 mt-6">
-                <button onclick="Router.go('dosen')" class="w-full sm:w-auto px-5 py-3 bg-white/10 hover:bg-white/20 border border-white/15 rounded-2xl text-sm font-bold transition-all">Kembali ke Dosen</button>
+                <button onclick="Router.go('home')" class="w-full sm:w-auto px-5 py-3 bg-white/10 hover:bg-white/20 border border-white/15 rounded-2xl text-sm font-bold transition-all">Kembali ke Beranda</button>
                 <button onclick="Router.go('home')" class="w-full sm:w-auto px-5 py-3 bg-gradient-to-r from-yellow-400 to-amber-500 text-black rounded-2xl text-sm font-extrabold shadow-lg transition-all">Selanjutnya</button>
             </div>
         </div>
@@ -374,7 +374,7 @@ const Pages = {
             <div class="grid grid-cols-3 gap-2 md:gap-4 mb-6">
                 <div class="bg-white/5 p-3 md:p-4 rounded-xl text-center">
                     <span class="text-[9px] md:text-[10px] text-gray-400 uppercase block mb-1">Skor</span>
-                    <span class="font-bubble-title text-base md:text-xl text-yellow-300">${GameState.score} XP</span>
+                    <span class="font-bubble-title text-base md:text-xl text-yellow-300">${GameState.score} / 100</span>
                 </div>
                 <div class="bg-white/5 p-3 md:p-4 rounded-xl text-center">
                     <span class="text-[9px] md:text-[10px] text-gray-400 uppercase block mb-1">Misi</span>
@@ -400,7 +400,7 @@ const Pages = {
                         <span class="text-[10px] text-gray-500">${item.date}</span>
                     </div>
                     <div class="text-right">
-                        <span class="font-bold text-yellow-300">+${item.score} XP</span>
+                        <span class="font-bold text-yellow-300">${item.score}/20</span>
                         <p class="text-[9px] text-gray-400">Akurasi: ${item.accuracy}%</p>
                     </div>
                 </div>

@@ -28,7 +28,6 @@ const MateriPage = {
 
         if (!GameState.progress.materiRead.includes(m.id)) {
             GameState.progress.materiRead.push(m.id);
-            GameState.addScore(10);
         }
 
         DATABASE_MATERI.forEach((_, i) => {
@@ -79,7 +78,7 @@ const MateriPage = {
                 <img src="${m.gambar}" alt="${m.judul}" class="w-12 h-12 md:w-16 md:h-16 rounded-full object-cover border-2 border-cyan-400 planet-thumb shrink-0" onerror="this.src='${ASSETS.placeholder}'">
                 <div>
                     <h3 class="font-bold text-base md:text-lg text-cyan-300">${m.judul}</h3>
-                    <span class="text-[10px] bg-green-500/20 text-green-300 px-2 py-0.5 rounded-full font-bold">Dibaca +10 XP</span>
+                    <span class="text-[10px] bg-green-500/20 text-green-300 px-2 py-0.5 rounded-full font-bold">Sudah dibaca</span>
                 </div>
             </div>
 

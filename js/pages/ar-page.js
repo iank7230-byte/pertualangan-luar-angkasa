@@ -19,37 +19,43 @@ const ARPage = {
     saturnus:  { accent: "#FFF176", glow: "rgba(255,241,118,0.3)", type: "Gas Giant" },
     uranus:    { accent: "#80DEEA", glow: "rgba(128,222,234,0.3)", type: "Ice Giant" },
     neptunus:  { accent: "#5C6BC0", glow: "rgba(92,107,192,0.3)",  type: "Ice Giant" },
-    gerhana:   { accent: "#9575CD", glow: "rgba(149,117,205,0.3)", type: "Fenomena" },
-    benda_lain:{ accent: "#78909C", glow: "rgba(120,144,156,0.2)", type: "Benda Kecil" },
   },
 
   // Ukuran relatif terhadap Bumi (Bumi = 1)
   relativeSize: {
     matahari: 109, merkurius: 0.38, venus: 0.95, bumi: 1,
     mars: 0.53, jupiter: 11.2, saturnus: 9.45, uranus: 4.0,
-    neptunus: 3.88, gerhana: 1, benda_lain: 0.1,
+    neptunus: 3.88,
   },
 
   // Suhu permukaan (°C) — bipolar bar
   surfaceTemp: {
     matahari: 5500, merkurius: 125, venus: 460, bumi: 15,
     mars: -63, jupiter: -110, saturnus: -140, uranus: -195,
-    neptunus: -200, gerhana: null, benda_lain: null,
+    neptunus: -200,
   },
 
   // Jumlah satelit
   moonCount: {
     matahari: 8, merkurius: 0, venus: 0, bumi: 1,
     mars: 2, jupiter: 95, saturnus: 146, uranus: 27,
-    neptunus: 16, gerhana: 0, benda_lain: 0,
+    neptunus: 16,
   },
-
-  // Viewer menggunakan free exploration — tidak ada coordinate locking
-  // Saat pilih planet, hanya info panel yang berubah, kamera tetap bebas
-  // User bisa zoom/drag/rotate ke mana saja
 
   // Default orbit untuk reset view (seluruh model terlihat)
   defaultOrbit: "45deg 80deg auto",
+
+  objectAliases: {
+    matahari: ["matahari", "sun"],
+    merkurius: ["merkurius", "mercury"],
+    venus: ["venus"],
+    bumi: ["bumi", "earth"],
+    mars: ["mars"],
+    jupiter: ["jupiter"],
+    saturnus: ["saturnus", "saturn"],
+    uranus: ["uranus"],
+    neptunus: ["neptunus", "neptune"],
+  },
 
   // Misi luar angkasa per planet
   missions: {
@@ -173,13 +179,16 @@ const ARPage = {
     viewer.addEventListener("camera-change", () => {
       if (viewer.interactionPrompt === "none") return;
     });
+    viewer.addEventListener("load", () => this._focusObject(this.activePlanet));
   },
 
   // ── Render tab selector planet ───────────────────────
   renderTabs() {
     const container = document.getElementById("planet-selector-scroll");
     if (!container) return;
-    const items = DATABASE_MATERI.filter((m) => m.id !== "pengertian");
+    const items = DATABASE_MATERI.filter(
+      (m) => m.id !== "pengertian" && !["gerhana", "benda_lain"].includes(m.id),
+    );
     container.innerHTML = items.map((m) => {
       const c = this.planetColors[m.id] || { accent: "#00d4ff" };
       return `
@@ -216,9 +225,7 @@ const ARPage = {
       }
     });
 
-    // Kamera TIDAK digerakkan saat pilih planet
-    // Model GLB berisi seluruh tata surya — biarkan user bebas explore
-    // Info panel & HUD yang berubah sesuai pilihan
+    this._focusObject(id);
 
     // Update HUD overlay
     this._updateHUD(id, m, col);
@@ -233,6 +240,47 @@ const ARPage = {
     // Render info panel dengan tab aktif
     this.activeTab = "overview";
     this._renderInfoPanel(m, col);
+  },
+
+  _focusObject(id) {
+    const viewer = document.getElementById("solar-system-3d");
+    if (!viewer) return;
+
+    if (!viewer.loaded) {
+      return;
+    }
+
+    const aliases = this.objectAliases[id] || [id];
+    const normalizedAliases = aliases.map((alias) => alias.toLowerCase().replace(/[^a-z0-9]/g, ""));
+    let selectedNode = null;
+    const scene = viewer.model && viewer.model.scene;
+
+    if (scene && typeof scene.traverse === "function") {
+      scene.traverse((node) => {
+        if (selectedNode || !node.name) return;
+        const nodeName = node.name.toLowerCase().replace(/[^a-z0-9]/g, "");
+        if (normalizedAliases.some((alias) => nodeName === alias || nodeName.includes(alias))) {
+          selectedNode = node;
+        }
+      });
+    }
+
+    if (!selectedNode || typeof selectedNode.getWorldPosition !== "function") {
+      viewer.setAttribute("camera-target", "0m 0m 0m");
+      viewer.setAttribute("camera-orbit", "0deg 75deg auto");
+      return;
+    }
+
+    const target = selectedNode.position.clone();
+    selectedNode.getWorldPosition(target);
+    const radius = selectedNode.geometry?.boundingSphere?.radius || 0.1;
+    const distance = Math.max(radius * 4, 0.15);
+
+    viewer.setAttribute(
+      "camera-target",
+      `${target.x}m ${target.y}m ${target.z}m`,
+    );
+    viewer.setAttribute("camera-orbit", `0deg 75deg ${distance}m`);
   },
 
   // ── Update HUD di viewer ─────────────────────────────
@@ -305,11 +353,7 @@ const ARPage = {
       </div>
       <!-- Action Buttons -->
       <div class="pt-3 mt-3 border-t flex gap-2" style="border-color: ${col.accent}20">
-        <button onclick="Router.go('level4')" class="flex-1 py-2 rounded-xl text-[10px] font-bold text-black transition-all hover:brightness-110 active:scale-95"
-            style="background: linear-gradient(135deg, ${col.accent}, ${col.accent}aa)">
-            🎯 Kuis tentang ini
-        </button>
-        <button onclick="ARPage.goBack()" class="px-3 py-2 rounded-xl text-[10px] font-bold bg-white/5 hover:bg-white/10 border border-white/10 transition-all">
+        <button onclick="ARPage.goBack()" class="w-full py-2 rounded-xl text-[10px] font-bold bg-white/5 hover:bg-white/10 border border-white/10 transition-all">
             ← Home
         </button>
       </div>

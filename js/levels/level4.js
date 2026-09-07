@@ -57,11 +57,10 @@ const Level4 = {
 
         if (selectedOpt === q.answer) {
             SoundManager.play('correct');
-            GameFeedback.show('correct', GameState.practiceMode ? 'Benar!' : '+200 XP');
+            GameFeedback.show('correct', GameState.practiceMode ? 'Benar!' : 'Benar!');
             buttonEl.className = "w-full text-left p-4 bg-green-500/20 border border-green-500 text-green-300 rounded-2xl text-xs font-bold";
             this.score += 200;
-            GameState.addScore(200);
-            fbTitle.innerText = `Luar Biasa! 🎉 ${GameState.practiceMode ? '(Latihan)' : '(+200 XP)'}`;
+            fbTitle.innerText = `Luar Biasa! 🎉 ${GameState.practiceMode ? '(Latihan)' : ''}`;
             fbTitle.className = "font-bold text-green-400 mb-1";
         } else {
             SoundManager.play('incorrect');
@@ -81,8 +80,8 @@ const Level4 = {
             const durationStr = `${Math.floor(durationSec/60)}m ${durationSec%60}s`;
             GameState.currentLevel = 4;
             GameState.completeLevel(4, {
-                score: this.score,
-                accuracy: Math.floor((this.score / (this.questions.length * 200)) * 100),
+                score: Math.max(1, Math.round((this.score / (this.questions.length * 200)) * 20)),
+                accuracy: Math.max(1, Math.floor((this.score / (this.questions.length * 200)) * 100)),
                 duration: durationStr
             });
         } else {

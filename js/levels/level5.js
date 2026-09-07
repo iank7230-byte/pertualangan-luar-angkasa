@@ -223,12 +223,11 @@ const Level5 = {
 
         if (opt === this.currentStarQuestion.answer) {
             SoundManager.play('correct');
-            GameFeedback.show('correct', GameState.practiceMode ? 'Bintang latihan!' : '+150 XP');
+            GameFeedback.show('correct', GameState.practiceMode ? 'Bintang latihan!' : 'Bintang dikumpulkan!');
             buttonEl.className = "w-full py-2.5 bg-green-500/20 border border-green-500 text-green-300 rounded-xl text-xs font-bold";
             this.starCollectedCount++;
-            GameState.addScore(150);
             this.updateUI();
-            fbText.innerHTML = `<span class="text-green-400 font-bold">Benar! Bintang dikumpulkan ${GameState.practiceMode ? '(Latihan)' : '(+150 XP)'}</span>`;
+            fbText.innerHTML = `<span class="text-green-400 font-bold">Benar! Bintang dikumpulkan ${GameState.practiceMode ? '(Latihan)' : ''}</span>`;
         } else {
             SoundManager.play('incorrect');
             GameFeedback.show('wrong', 'Bintang melayang pergi');
@@ -245,8 +244,8 @@ const Level5 = {
                 const durationStr = `${Math.floor(durationSec/60)}m ${durationSec%60}s`;
                 GameState.currentLevel = 5;
                 GameState.completeLevel(5, {
-                    score: 1000,
-                    accuracy: Math.floor((this.starCollectedCount / Math.max(1, this.answerAttempts)) * 100),
+                    score: Math.max(1, Math.round((this.starCollectedCount / Math.max(1, this.answerAttempts)) * 20)),
+                    accuracy: Math.max(1, Math.floor((this.starCollectedCount / Math.max(1, this.answerAttempts)) * 100)),
                     duration: durationStr
                 });
             } else {

@@ -50,11 +50,10 @@ const Level3 = {
         
         if (userAnswer === q.answer) {
             SoundManager.play('correct');
-            GameFeedback.show('correct', GameState.practiceMode ? 'Benar!' : '+100 XP');
+            GameFeedback.show('correct', GameState.practiceMode ? 'Benar!' : 'Benar!');
             this.score += 100;
-            GameState.addScore(100);
             fb.innerHTML = `
-                <div class="text-green-400 font-bold text-sm mb-1">BENAR! 🎉 ${GameState.practiceMode ? '(Latihan)' : '(+100 XP)'}</div>
+                <div class="text-green-400 font-bold text-sm mb-1">BENAR! 🎉 ${GameState.practiceMode ? '(Latihan)' : ''}</div>
                 <p class="text-xs text-gray-300">${q.explanation}</p>
             `;
         } else {
@@ -80,8 +79,8 @@ const Level3 = {
             const durationStr = `${Math.floor(durationSec/60)}m ${durationSec%60}s`;
             GameState.currentLevel = 3;
             GameState.completeLevel(3, {
-                score: this.score,
-                accuracy: Math.floor((this.score / (this.questions.length * 100)) * 100),
+                score: Math.max(1, Math.round((this.score / (this.questions.length * 100)) * 20)),
+                accuracy: Math.max(1, Math.floor((this.score / (this.questions.length * 100)) * 100)),
                 duration: durationStr
             });
         } else {

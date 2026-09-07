@@ -25,7 +25,13 @@ const GameState = {
     if (!Array.isArray(this.progress.levelsCompleted)) {
       this.progress.levelsCompleted = [];
     }
-    this.history = StorageManager.get("history", []);
+    this.history = StorageManager.get("history", []).map((item) => ({
+      ...item,
+      score: Math.min(20, Math.max(1, Math.round(Number(item.score) || 1))),
+    }));
+    this.score = this.history.reduce((total, item) => total + item.score, 0);
+    StorageManager.set("score", this.score);
+    StorageManager.set("history", this.history);
     this.lastLevel = StorageManager.get("lastLevel", 1);
     this.practiceMode = false;
   },
@@ -41,7 +47,7 @@ const GameState = {
 
   addScore(points) {
     if (this.practiceMode) return;
-    this.score += points;
+    this.score += Math.max(0, Number(points) || 0);
     this.save();
     this.updateGlobalHeader();
   },
@@ -88,10 +94,11 @@ const GameState = {
     const newRecord = {
       level: levelNum,
       date: new Date().toLocaleDateString("id-ID"),
-      score: stats.score || 0,
+      score: Math.min(20, Math.max(1, Math.round(Number(stats.score) || 1))),
       accuracy: stats.accuracy || 100,
       duration: stats.duration || "00:00",
     };
+    this.addScore(newRecord.score);
     this.history.unshift(newRecord);
     this.save();
 
@@ -162,6 +169,10 @@ const Router = {
   previousPage: "splash",
 
   go(pageId) {
+    if (pageId === "dosen" || pageId === "team") {
+      pageId = "home";
+    }
+
     SoundManager.play("click");
     this.previousPage = this.currentPage;
     this.currentPage = pageId;
@@ -224,12 +235,6 @@ const Router = {
         break;
       case "home":
         container.innerHTML = Pages.home();
-        break;
-      case "team":
-        container.innerHTML = Pages.team();
-        break;
-      case "dosen":
-        container.innerHTML = Pages.dosen();
         break;
       case "materi":
         container.innerHTML = Pages.materi();
@@ -375,7 +380,7 @@ function savePlayerNameAndStart() {
   GameState.playerName = name;
   GameState.save();
   SoundManager.startBGM(); // Aktifkan musik secara paksa setelah interaksi tombol
-  Router.go("dosen");
+  Router.go("home");
 }
 
 function showTeamProfile(type) {
