@@ -7,6 +7,8 @@ const Level3 = {
     currentIndex: 0,
     score: 0,
     startTime: null,
+    timerId: null,
+    timeLeft: 20,
 
     init() {
         this.questions = [...DATABASE_TRUE_FALSE].sort(() => Math.random() - 0.5);
@@ -16,12 +18,38 @@ const Level3 = {
         this.showQuestion();
     },
 
+    cleanup() {
+        clearInterval(this.timerId);
+        this.timerId = null;
+    },
+
+    startTimer() {
+        this.cleanup();
+        this.timeLeft = 20;
+        const timer = document.getElementById('l3-timer');
+        const update = () => {
+            if (timer) timer.innerText = `00:${String(this.timeLeft).padStart(2, '0')}`;
+        };
+        update();
+        this.timerId = setInterval(() => {
+            this.timeLeft--;
+            update();
+            if (this.timeLeft <= 0) this.failByTimeout();
+        }, 1000);
+    },
+
+    failByTimeout() {
+        this.cleanup();
+        Dialog.alert("Waktu menjawab habis. Misi Level 3 gagal.", () => Router.go('home'));
+    },
+
     showQuestion() {
         const q = this.questions[this.currentIndex];
         document.getElementById('l3-progress').innerText = `${this.currentIndex + 1} / ${this.questions.length}`;
         document.getElementById('l3-progress-bar').style.width = `${((this.currentIndex + 1) / this.questions.length) * 100}%`;
         document.getElementById('l3-statement').innerText = q.question;
         document.getElementById('l3-feedback').classList.add('hidden');
+        this.startTimer();
 
         // Tampilkan gambar jika ada
         let imgContainer = document.getElementById('l3-question-img-wrap');
@@ -45,6 +73,8 @@ const Level3 = {
 
     answer(userAnswer) {
         const q = this.questions[this.currentIndex];
+        if (!this.timerId) return;
+        this.cleanup();
         const fb = document.getElementById('l3-feedback');
         fb.classList.remove('hidden');
         
@@ -78,6 +108,7 @@ const Level3 = {
             const durationSec = Math.floor((new Date() - this.startTime) / 1000);
             const durationStr = `${Math.floor(durationSec/60)}m ${durationSec%60}s`;
             GameState.currentLevel = 3;
+            this.cleanup();
             GameState.completeLevel(3, {
                 score: Math.max(1, Math.round((this.score / (this.questions.length * 100)) * 20)),
                 accuracy: Math.max(1, Math.floor((this.score / (this.questions.length * 100)) * 100)),

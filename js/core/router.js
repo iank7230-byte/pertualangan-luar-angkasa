@@ -209,6 +209,10 @@ const Router = {
       window.missionGameLoopId = null;
     }
 
+    [Level1, Level2, Level3, Level4].forEach((level) => {
+      if (level && typeof level.cleanup === "function") level.cleanup();
+    });
+
     if (
       typeof Level5 !== "undefined" &&
       typeof Level5.cleanup === "function" &&

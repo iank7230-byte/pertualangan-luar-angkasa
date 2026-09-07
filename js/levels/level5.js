@@ -14,6 +14,8 @@ const Level5 = {
     currentStarQuestion: null,
     startTime: null,
     answerAttempts: 0,
+    timerId: null,
+    timeLeft: 20,
     keyDownHandler: null,
     keyUpHandler: null,
     stopMoveHandler: null,
@@ -89,6 +91,32 @@ const Level5 = {
         this.keyUpHandler = null;
         this.stopMoveHandler = null;
         this.keys = {};
+        clearInterval(this.timerId);
+        this.timerId = null;
+    },
+
+    startQuestionTimer() {
+        clearInterval(this.timerId);
+        this.timeLeft = 20;
+        const timer = document.getElementById('l5-timer');
+        const update = () => {
+            if (timer) timer.innerText = `00:${String(this.timeLeft).padStart(2, '0')}`;
+        };
+        update();
+        this.timerId = setInterval(() => {
+            this.timeLeft--;
+            update();
+            if (this.timeLeft <= 0) this.failByTimeout();
+        }, 1000);
+    },
+
+    failByTimeout() {
+        clearInterval(this.timerId);
+        this.timerId = null;
+        this.gameActive = false;
+        const overlay = document.getElementById('l5-question-overlay');
+        if (overlay) overlay.classList.add('hidden');
+        Dialog.alert("Waktu menjawab habis. Misi Level 5 gagal.", () => Router.go('home'));
     },
 
     updateUI() {
@@ -212,9 +240,13 @@ const Level5 = {
         });
 
         overlay.classList.remove('hidden');
+        this.startQuestionTimer();
     },
 
     submitAnswer(opt, buttonEl) {
+        if (!this.timerId) return;
+        clearInterval(this.timerId);
+        this.timerId = null;
         const fbText = document.getElementById('l5-feedback');
         fbText.classList.remove('hidden');
         this.answerAttempts++;
@@ -243,6 +275,7 @@ const Level5 = {
                 const durationSec = Math.floor((new Date() - this.startTime) / 1000);
                 const durationStr = `${Math.floor(durationSec/60)}m ${durationSec%60}s`;
                 GameState.currentLevel = 5;
+                this.cleanup();
                 GameState.completeLevel(5, {
                     score: Math.max(1, Math.round((this.starCollectedCount / Math.max(1, this.answerAttempts)) * 20)),
                     accuracy: Math.max(1, Math.floor((this.starCollectedCount / Math.max(1, this.answerAttempts)) * 100)),

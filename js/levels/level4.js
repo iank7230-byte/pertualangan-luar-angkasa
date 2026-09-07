@@ -7,6 +7,8 @@ const Level4 = {
     currentIndex: 0,
     score: 0,
     startTime: null,
+    timerId: null,
+    timeLeft: 20,
 
     init() {
         this.questions = [...DATABASE_QUIZ].sort(() => Math.random() - 0.5);
@@ -16,6 +18,31 @@ const Level4 = {
         this.showQuestion();
     },
 
+    cleanup() {
+        clearInterval(this.timerId);
+        this.timerId = null;
+    },
+
+    startTimer() {
+        this.cleanup();
+        this.timeLeft = 20;
+        const timer = document.getElementById('l4-timer');
+        const update = () => {
+            if (timer) timer.innerText = `00:${String(this.timeLeft).padStart(2, '0')}`;
+        };
+        update();
+        this.timerId = setInterval(() => {
+            this.timeLeft--;
+            update();
+            if (this.timeLeft <= 0) this.failByTimeout();
+        }, 1000);
+    },
+
+    failByTimeout() {
+        this.cleanup();
+        Dialog.alert("Waktu menjawab habis. Misi Level 4 gagal.", () => Router.go('home'));
+    },
+
     showQuestion() {
         const q = this.questions[this.currentIndex];
         document.getElementById('l4-count').innerText = `${this.currentIndex + 1} / ${this.questions.length}`;
@@ -23,13 +50,7 @@ const Level4 = {
         document.getElementById('l4-question').innerText = q.question;
         document.getElementById('l4-feedback').classList.add('hidden');
 
-        const imgEl = document.getElementById('l4-question-img');
-        if (q.image) {
-            imgEl.src = q.image;
-            imgEl.classList.remove('hidden');
-        } else {
-            imgEl.classList.add('hidden');
-        }
+        this.startTimer();
 
         const optionsContainer = document.getElementById('l4-options-container');
         optionsContainer.innerHTML = '';
@@ -45,6 +66,8 @@ const Level4 = {
     },
 
     selectAnswer(selectedOpt, buttonEl) {
+        if (!this.timerId) return;
+        this.cleanup();
         const q = this.questions[this.currentIndex];
         const container = document.getElementById('l4-options-container');
         container.style.pointerEvents = 'none';
@@ -79,6 +102,7 @@ const Level4 = {
             const durationSec = Math.floor((new Date() - this.startTime) / 1000);
             const durationStr = `${Math.floor(durationSec/60)}m ${durationSec%60}s`;
             GameState.currentLevel = 4;
+            this.cleanup();
             GameState.completeLevel(4, {
                 score: Math.max(1, Math.round((this.score / (this.questions.length * 200)) * 20)),
                 accuracy: Math.max(1, Math.floor((this.score / (this.questions.length * 200)) * 100)),

@@ -17,13 +17,41 @@ const Level1 = {
     targetIndex: 0,
     lives: 3,
     startTime: null,
+    timerId: null,
+    timeLeft: 60,
 
     init() {
         this.targetIndex = 0;
         this.lives = 3;
         this.startTime = new Date();
+        this.startTimer();
         this.updateUI();
         this.renderOrbits();
+    },
+
+    cleanup() {
+        clearInterval(this.timerId);
+        this.timerId = null;
+    },
+
+    startTimer() {
+        this.cleanup();
+        this.timeLeft = 60;
+        const timer = document.getElementById('l1-timer');
+        const update = () => {
+            if (timer) timer.innerText = `${String(Math.floor(this.timeLeft / 60)).padStart(2, '0')}:${String(this.timeLeft % 60).padStart(2, '0')}`;
+        };
+        update();
+        this.timerId = setInterval(() => {
+            this.timeLeft--;
+            update();
+            if (this.timeLeft <= 0) this.failByTimeout();
+        }, 1000);
+    },
+
+    failByTimeout() {
+        this.cleanup();
+        Dialog.alert("Waktu Level 1 habis. Misi gagal, silakan coba lagi.", () => Router.go('home'));
     },
 
     updateUI() {
@@ -104,6 +132,7 @@ const Level1 = {
     },
 
     planetClicked(name, element, orbitElement) {
+        if (!this.timerId) return;
         const targetName = this.order[this.targetIndex];
         
         if (name === targetName) {
@@ -116,6 +145,7 @@ const Level1 = {
             orbitElement.style.borderWidth = "2px";
             
             if (this.targetIndex >= this.order.length) {
+                this.cleanup();
                 const durationSec = Math.floor((new Date() - this.startTime) / 1000);
                 const durationStr = `${Math.floor(durationSec/60)}m ${durationSec%60}s`;
                 GameState.currentLevel = 1;

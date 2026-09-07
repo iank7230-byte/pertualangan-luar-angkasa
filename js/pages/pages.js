@@ -214,6 +214,9 @@ const Pages = {
                     <div class="text-xs md:text-sm font-bold bg-red-500/20 border border-red-500/40 px-3 py-1.5 rounded-full text-red-300">
                         ❤️ NYAWA: <span id="l1-lives" class="font-bubble-title text-base md:text-lg">3</span>
                     </div>
+                    <div class="text-xs md:text-sm font-bold bg-yellow-400/15 border border-yellow-300/30 px-3 py-1.5 rounded-full text-yellow-200">
+                        ⏱ <span id="l1-timer">01:00</span>
+                    </div>
                     ${this.levelControls(1)}
                 </div>
             </div>
@@ -243,7 +246,12 @@ const Pages = {
                     <span class="text-xs font-bold text-yellow-400">MISI LEVEL 2</span>
                     <h2 class="font-bubble-title text-xl md:text-2xl text-white">COCOKKAN PLANET</h2>
                 </div>
-                ${this.levelControls(2)}
+                <div class="flex flex-wrap items-center justify-end gap-2">
+                    <div class="text-xs md:text-sm font-bold bg-yellow-400/15 border border-yellow-300/30 px-3 py-1.5 rounded-full text-yellow-200">
+                        ⏱ <span id="l2-timer">01:00</span>
+                    </div>
+                    ${this.levelControls(2)}
+                </div>
             </div>
 
             <p class="text-xs text-cyan-300 mb-4 bg-cyan-500/10 p-3 rounded-xl">Klik nama planet, lalu klik gambar planet yang sesuai!</p>
@@ -267,6 +275,7 @@ const Pages = {
                 <h2 class="font-bubble-title text-xl md:text-2xl text-white">BENAR ATAU SALAH</h2>
                 <div class="flex flex-wrap items-center justify-end gap-2">
                     <span class="text-xs font-bold bg-cyan-500/20 px-3 py-1.5 rounded-full text-cyan-300" id="l3-progress">1 / 15</span>
+                    <span class="text-xs font-bold bg-yellow-400/15 border border-yellow-300/30 px-3 py-1.5 rounded-full text-yellow-200">⏱ <span id="l3-timer">00:20</span></span>
                     ${this.levelControls(3)}
                 </div>
             </div>
@@ -295,6 +304,7 @@ const Pages = {
                 <h2 class="font-bubble-title text-xl md:text-2xl text-white">QUIZ ADVENTURE</h2>
                 <div class="flex flex-wrap items-center justify-end gap-2">
                     <span class="text-xs font-bold bg-cyan-500/20 px-3 py-1.5 rounded-full text-cyan-300" id="l4-count">1 / 10</span>
+                    <span class="text-xs font-bold bg-yellow-400/15 border border-yellow-300/30 px-3 py-1.5 rounded-full text-yellow-200">⏱ <span id="l4-timer">00:20</span></span>
                     ${this.levelControls(4)}
                 </div>
             </div>
@@ -304,11 +314,6 @@ const Pages = {
             </div>
 
             <div class="bg-cyan-950/20 border border-cyan-500/30 p-4 md:p-6 rounded-2xl mb-4">
-                <div class="w-full flex justify-center mb-4">
-                    <img id="l4-question-img" src="" alt="Ilustrasi Soal"
-                        class="rounded-2xl border border-cyan-500/30 max-h-40 md:max-h-52 w-auto object-contain shadow-xl hidden"
-                        style="background: rgba(0,0,0,0.3)">
-                </div>
                 <h3 id="l4-question" class="text-sm md:text-base font-bold mb-4"></h3>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-3" id="l4-options-container"></div>
             </div>
@@ -329,6 +334,7 @@ const Pages = {
                 <h2 class="font-bubble-title text-xl md:text-2xl text-white">MISSION SPACE</h2>
                 <div class="flex flex-wrap items-center justify-end gap-2">
                     <span class="text-xs md:text-sm font-bold bg-cyan-500/20 px-3 md:px-4 py-1.5 rounded-full text-yellow-300" id="l5-star-count">⭐ 0 / 5</span>
+                        <span class="text-xs md:text-sm font-bold bg-yellow-400/15 border border-yellow-300/30 px-3 py-1.5 rounded-full text-yellow-200">⏱ <span id="l5-timer">00:20</span></span>
                     ${this.levelControls(5)}
                 </div>
             </div>

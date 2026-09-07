@@ -17,13 +17,41 @@ const Level2 = {
     selectedNameEl: null,
     assignments: {},
     startTime: null,
+    timerId: null,
+    timeLeft: 60,
 
     init() {
         this.selectedName = null;
         this.selectedNameEl = null;
         this.assignments = {};
         this.startTime = new Date();
+        this.startTimer();
         this.renderBoard();
+    },
+
+    cleanup() {
+        clearInterval(this.timerId);
+        this.timerId = null;
+    },
+
+    startTimer() {
+        this.cleanup();
+        this.timeLeft = 60;
+        const timer = document.getElementById('l2-timer');
+        const update = () => {
+            if (timer) timer.innerText = `${String(Math.floor(this.timeLeft / 60)).padStart(2, '0')}:${String(this.timeLeft % 60).padStart(2, '0')}`;
+        };
+        update();
+        this.timerId = setInterval(() => {
+            this.timeLeft--;
+            update();
+            if (this.timeLeft <= 0) this.failByTimeout();
+        }, 1000);
+    },
+
+    failByTimeout() {
+        this.cleanup();
+        Dialog.alert("Waktu Level 2 habis. Misi gagal, silakan coba lagi.", () => Router.go('home'));
     },
 
     renderBoard() {
@@ -88,6 +116,7 @@ const Level2 = {
     },
 
     checkAnswers() {
+        if (!this.timerId) return;
         let correctCount = 0;
         let total = this.planets.length;
 
@@ -98,6 +127,7 @@ const Level2 = {
         });
 
         if (correctCount === total) {
+            this.cleanup();
             SoundManager.play('win');
             GameFeedback.show('correct', GameState.practiceMode ? 'Latihan selesai!' : 'Misi berhasil!');
             const durationSec = Math.floor((new Date() - this.startTime) / 1000);
